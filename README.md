@@ -1,134 +1,144 @@
 # ROS 2 TurtleSim Square Motion Controller 🐢🤖
 
-> A practical ROS 2 project that demonstrates robot motion control in
-> **TurtleSim** using Python, ROS 2 publishers, timed callbacks, and
-> `geometry_msgs/Twist` velocity commands. The turtle alternates between
-> forward motion and 90°-style rotation to produce a square-like
-> trajectory.
+> A practical ROS 2 robotics project that demonstrates simulated robot motion control using Python, ROS 2 publishers, timed callbacks, and `geometry_msgs/Twist` velocity commands.
 
-![ROS 2 TurtleSim Final Output](assets/03-final-output.png)
+![Final TurtleSim Output](03-final-output.png)
 
-## 📌 Project Overview
+---
 
-This project was built as a hands-on introduction to **ROS 2 robot
-control** and the publisher-based communication model.
+## 📌 Overview
 
-The Python node creates a ROS 2 publisher connected to:
+**ROS 2 TurtleSim Square Motion Controller** is a hands-on robotics project developed using **ROS 2 Humble**, **Python**, and **TurtleSim**.
 
-``` text
-/turtle1/cmd_vel
-```
+The project demonstrates how a Python-based ROS 2 node can communicate with a simulated robot by publishing velocity commands to the `/turtle1/cmd_vel` topic.
 
-and continuously publishes `Twist` messages to control the TurtleSim
-robot's:
+The controller alternates between forward movement and rotation, producing a repeated square-like motion pattern inside the TurtleSim environment.
 
--   **Linear velocity** → forward movement
--   **Angular velocity** → rotation
--   **Timer callback** → periodic movement commands
+The project focuses on understanding the fundamental connection between **Python programming, ROS 2 communication, publishers, topics, timers, callbacks, and robotic motion control**.
 
-The result is a simple but clear example of how a ROS 2 node can
-translate programmed motion logic into visible robot behavior.
+---
 
-------------------------------------------------------------------------
+## 🎯 Project Objectives
 
-## 🎯 Objectives
+The main objectives of this project were to:
 
-The project was designed to practice the following ROS 2 concepts:
+- Build a ROS 2 node using Python.
+- Understand the basic ROS 2 node architecture.
+- Create and use a ROS 2 publisher.
+- Publish `geometry_msgs/Twist` messages.
+- Control linear and angular velocity.
+- Use ROS 2 timers and callbacks.
+- Communicate through the `/turtle1/cmd_vel` topic.
+- Control a simulated robot using TurtleSim.
+- Practice running ROS 2 applications from a Linux terminal.
+- Connect programming logic with robotic movement.
 
--   Creating a ROS 2 Python node with `rclpy`
--   Creating and using a publisher
--   Publishing `geometry_msgs/Twist` messages
--   Controlling linear and angular velocity
--   Using ROS 2 timers and callbacks
--   Running and testing a ROS 2 node from the terminal
--   Visualizing robot motion through TurtleSim
--   Understanding the relationship between a Python control node and a
-    ROS 2 topic
-
-------------------------------------------------------------------------
+---
 
 ## 🧠 How It Works
 
-The control logic is intentionally simple:
+The project follows a simple ROS 2 communication flow:
 
-``` text
-ROS 2 Node
-    │
-    ▼
-Timer Callback
-    │
-    ├── Even Step ──► Move Forward
-    │                  linear.x = 2.0
-    │
-    └── Odd Step ───► Turn
-                       angular.z = 1.57
-    │
-    ▼
-/turtle1/cmd_vel
-    │
-    ▼
-TurtleSim
+```text
+                 Python Program
+                       │
+                       ▼
+                 ROS 2 Node
+                 "turtle_square"
+                       │
+                       ▼
+                Timer Callback
+                       │
+              ┌────────┴────────┐
+              │                 │
+              ▼                 ▼
+        Move Forward           Turn
+        linear.x = 2.0     angular.z = 1.57
+              │                 │
+              └────────┬────────┘
+                       ▼
+               /turtle1/cmd_vel
+                       │
+                       ▼
+                   TurtleSim
+                       │
+                       ▼
+                Simulated Motion
 ```
 
-Every second, the timer callback creates a new `Twist` message.
+The node publishes a new `Twist` message every second.
 
-### Forward Motion
+The controller uses a simple step counter to alternate between forward movement and rotation.
 
-``` python
+---
+
+## ⚙️ Motion Control
+
+### Forward Movement
+
+When the current step is even, the turtle receives:
+
+```python
 msg.linear.x = 2.0
 msg.angular.z = 0.0
 ```
 
-The turtle moves forward without rotating.
+This commands the turtle to move forward without rotating.
+
+---
 
 ### Rotation
 
-``` python
+When the current step is odd, the turtle receives:
+
+```python
 msg.linear.x = 0.0
 msg.angular.z = 1.57
 ```
 
-The turtle stops its linear motion and rotates approximately at **π/2
-radians per second** (90°/s).
+This stops the forward movement and rotates the turtle.
 
-The `step` counter alternates between these two states.
+The angular velocity of `1.57 rad/s` is approximately equivalent to a 90-degree-per-second rotation.
 
-------------------------------------------------------------------------
+---
 
-## 🛠️ Technologies & Tools
+## 🛠️ Technologies Used
 
-  Technology                Purpose
-  ------------------------- -----------------------------------------
-  **ROS 2 Humble**          Robotics middleware and communication
-  **Python 3**              Motion-control node
-  **rclpy**                 ROS 2 Python client library
-  **TurtleSim**             Robot simulation and visualization
-  **geometry_msgs/Twist**   Velocity command message
-  **Linux Terminal**        Build, environment setup, and execution
+| Technology | Purpose |
+|---|---|
+| **ROS 2 Humble** | Robotics middleware and communication |
+| **Python 3** | Motion-control programming |
+| **rclpy** | ROS 2 Python client library |
+| **TurtleSim** | Robot simulation environment |
+| **geometry_msgs/Twist** | Velocity command message |
+| **Linux Terminal** | Development and execution environment |
 
-------------------------------------------------------------------------
+---
 
 ## 📂 Project Structure
 
-``` text
-.
+The project files are stored directly in the repository:
+
+```text
+ROS2-TurtleSim-Square-Motion-Controller/
+│
+├── README.md
 ├── turtle_square.py
-├── assets/
-│   ├── 01-development-environment.png
-│   ├── 02-ros2-process.png
-│   ├── 03-final-output.png
-│   ├── final-process.gif
-│   └── ros2-final-process.mp4
-└── README.md
+│
+├── 01-development-environment.png
+├── 02-ros2-process.png
+├── 03-final-output.png
+├── final-process.gif
+└── ros2-final-process.mp4
 ```
 
-------------------------------------------------------------------------
+---
 
-## 💻 The Control Node
+## 💻 Source Code
 
-The main Python file is `turtle_square.py`.
+The main ROS 2 controller is implemented in `turtle_square.py`.
 
-``` python
+```python
 #!/usr/bin/env python3
 
 import rclpy
@@ -186,196 +196,349 @@ if __name__ == '__main__':
     main()
 ```
 
-------------------------------------------------------------------------
+---
 
-## 🚀 Running the Project
+## 🚀 How to Run
 
-### 1. Start ROS 2
+### 1. Source ROS 2 Humble
 
-Open a terminal and source the ROS 2 Humble environment:
+Open a terminal and run:
 
-``` bash
+```bash
 source /opt/ros/humble/setup.bash
 ```
 
-### 2. Launch TurtleSim
+---
 
-In a terminal:
+### 2. Start TurtleSim
 
-``` bash
+Run:
+
+```bash
 ros2 run turtlesim turtlesim_node
 ```
 
-This starts the TurtleSim simulation window.
+This launches the TurtleSim simulation environment.
 
-### 3. Open the Project Directory
+---
 
-``` bash
+### 3. Navigate to the Script Directory
+
+```bash
 cd ~/turtle_scripts
 ```
 
+---
+
 ### 4. Source ROS 2 Again
 
-``` bash
+```bash
 source /opt/ros/humble/setup.bash
 ```
 
+---
+
 ### 5. Make the Python Script Executable
 
-``` bash
+```bash
 chmod +x turtle_square.py
 ```
 
+---
+
 ### 6. Run the Controller
 
-``` bash
+```bash
 python3 turtle_square.py
 ```
 
-You should see ROS 2 log messages similar to:
+The terminal will display messages such as:
 
-``` text
+```text
 [turtle_square]: Moving Forward...
 [turtle_square]: Turning...
 [turtle_square]: Moving Forward...
 [turtle_square]: Turning...
 ```
 
-At the same time, TurtleSim responds to the published velocity commands.
+At the same time, TurtleSim receives the velocity commands and moves according to the programmed logic.
 
-------------------------------------------------------------------------
+---
 
-## 🖥️ Development Process
+## 🖥️ Development Environment
 
-### ROS 2 Environment & Code
+The project was developed in a Linux-based ROS 2 environment using Python and ROS 2 Humble.
 
-The project was developed and executed in a Linux-based ROS 2
-environment.
+![Development Environment](01-development-environment.png)
 
-![Development Environment](assets/01-development-environment.png)
+---
 
-### Running ROS 2 and TurtleSim
+## 🔄 ROS 2 Execution Process
 
-The second stage demonstrates the ROS 2 node running alongside TurtleSim
-and publishing movement commands.
+The following image shows the ROS 2 execution process, including the TurtleSim environment and the Python controller running through the terminal.
 
-![ROS 2 Process](assets/02-ros2-process.png)
+![ROS 2 Process](02-ros2-process.png)
 
-### Final Output
+---
 
-The final simulation shows the turtle following the programmed movement
-pattern.
+## 🎯 Final Output
 
-![Final Output](assets/03-final-output.png)
+The final simulation demonstrates the resulting TurtleSim movement produced by the Python ROS 2 controller.
 
-------------------------------------------------------------------------
+![Final Output](03-final-output.png)
+
+---
 
 ## 🎥 Final Demonstration
 
-### Live Process Preview
+The animated GIF below provides a quick visual demonstration of the final ROS 2 TurtleSim process.
 
-[![ROS 2 TurtleSim Final
-Process](assets/final-process.gif)](assets/ros2-final-process.mp4)
+![Final ROS 2 TurtleSim Process](final-process.gif)
 
-**[▶ Open the full MP4 demonstration](assets/ros2-final-process.mp4)**
+### Full Video
 
-> The GIF is included so the motion can be previewed directly from the
-> GitHub README. The original MP4 is also included for the complete
-> demonstration.
+For the complete demonstration, see:
 
-------------------------------------------------------------------------
+**[▶ View the Full ROS 2 TurtleSim Demonstration](ros2-final-process.mp4)**
+
+> The GIF is included for quick viewing directly inside the GitHub README, while the original MP4 is provided as the complete demonstration.
+
+---
 
 ## 🔍 ROS 2 Concepts Demonstrated
 
-### Node
+### 1. ROS 2 Node
 
-The `TurtleSquare` class inherits from:
+The project creates a custom ROS 2 node:
 
-``` python
-Node
+```python
+class TurtleSquare(Node):
 ```
 
-This makes the Python class a ROS 2 node.
+The node is responsible for generating and publishing the robot's movement commands.
 
-### Publisher
+---
 
-The node publishes `Twist` messages to:
+### 2. Publisher
 
-``` text
+The controller creates a publisher using:
+
+```python
+self.publisher_ = self.create_publisher(
+    Twist,
+    '/turtle1/cmd_vel',
+    10
+)
+```
+
+This allows the Python node to send velocity commands to TurtleSim.
+
+---
+
+### 3. ROS 2 Topic
+
+The main communication topic used by the project is:
+
+```text
 /turtle1/cmd_vel
 ```
 
-using:
+This topic carries the velocity commands that control the simulated turtle.
 
-``` python
-self.create_publisher(Twist, '/turtle1/cmd_vel', 10)
+---
+
+### 4. Twist Message
+
+The project uses:
+
+```python
+from geometry_msgs.msg import Twist
 ```
 
-### Timer
+The `Twist` message contains linear and angular velocity components.
 
-A ROS 2 timer calls the movement function every second:
+The project primarily uses:
 
-``` python
-self.create_timer(1.0, self.timer_callback)
+```python
+linear.x
 ```
 
-### Twist Message
+for forward movement and:
 
-`geometry_msgs/Twist` provides the velocity components used to control
-the simulated robot:
-
-``` text
-linear.x  → forward/backward velocity
-angular.z → rotational velocity
+```python
+angular.z
 ```
 
-------------------------------------------------------------------------
+for rotation.
+
+---
+
+### 5. Timer Callback
+
+The controller uses a ROS 2 timer:
+
+```python
+self.timer = self.create_timer(
+    1.0,
+    self.timer_callback
+)
+```
+
+This causes the callback function to execute once every second.
+
+The callback then determines whether the turtle should move forward or rotate.
+
+---
+
+## 🔁 Motion Logic
+
+The movement logic is based on the `step` counter:
+
+```python
+if self.step % 2 == 0:
+```
+
+This creates the following sequence:
+
+```text
+Step 0 → Move Forward
+Step 1 → Turn
+Step 2 → Move Forward
+Step 3 → Turn
+Step 4 → Move Forward
+Step 5 → Turn
+...
+```
+
+This simple control structure demonstrates how programmed states can be used to create robot movement patterns.
+
+---
+
+## 📊 Key Parameters
+
+| Parameter | Value | Description |
+|---|---:|---|
+| Timer period | `1.0 s` | Time between callback executions |
+| Linear velocity | `2.0` | Forward movement speed |
+| Angular velocity | `1.57 rad/s` | Rotation speed |
+| Topic | `/turtle1/cmd_vel` | Turtle velocity command topic |
+| Message | `Twist` | ROS 2 velocity message |
+| Node | `turtle_square` | Main controller node |
+
+---
+
+## 🧩 Project Architecture
+
+The project demonstrates a basic publisher-based ROS 2 architecture:
+
+```text
+┌──────────────────────────────┐
+│       turtle_square.py       │
+│                              │
+│       ROS 2 Python Node      │
+└──────────────┬───────────────┘
+               │
+               │ Publish Twist
+               ▼
+┌──────────────────────────────┐
+│      /turtle1/cmd_vel        │
+│          ROS 2 Topic         │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│          TurtleSim           │
+│      Simulated Robot         │
+└──────────────────────────────┘
+```
+
+---
 
 ## 📈 Possible Improvements
 
-This project intentionally keeps the control logic simple. A natural
-next step would be to make the motion more precise and scalable.
+The current implementation focuses on the fundamentals of ROS 2 communication and simulated robot motion.
 
-Possible improvements include:
+Possible future improvements include:
 
--   Implement a proper finite-state machine for the four sides of the
-    square
--   Stop automatically after completing one square
--   Add configurable side length and turning angle
--   Use elapsed time or odometry instead of fixed timing
--   Add a ROS 2 service or action to start/stop the motion
--   Add parameters for speed and square size
--   Subscribe to `/turtle1/pose` for closed-loop control
--   Convert the script into a complete ROS 2 Python package
--   Add launch files and configurable ROS 2 parameters
+- Implementing a dedicated state machine for the four sides of the square.
+- Automatically stopping after one complete square.
+- Adding configurable square dimensions.
+- Adding ROS 2 parameters for movement speed.
+- Using elapsed time to control movement distance more accurately.
+- Subscribing to `/turtle1/pose` for feedback.
+- Implementing closed-loop motion control.
+- Adding ROS 2 services to start and stop the controller.
+- Creating a complete ROS 2 Python package.
+- Adding a ROS 2 launch file.
+- Adding automated tests.
+- Separating configuration from the main control logic.
 
-These improvements would move the project from a basic open-loop
-demonstration toward a more robust robotics control implementation.
+These improvements would make the controller more precise and move it closer to a robust robotics control architecture.
 
-------------------------------------------------------------------------
+---
 
-## 📚 What This Project Demonstrates
+## 📚 What I Learned
 
-This project demonstrates practical understanding of:
+This project provided practical experience with the connection between software and robotics:
 
-**Python → ROS 2 Node → Publisher → Twist → `/turtle1/cmd_vel` →
-TurtleSim**
+```text
+Python
+   ↓
+ROS 2 Node
+   ↓
+Publisher
+   ↓
+Twist Message
+   ↓
+ROS 2 Topic
+   ↓
+TurtleSim
+   ↓
+Robot Motion
+```
 
-Rather than only writing Python code, the project connects software
-logic to a simulated robotic system through ROS 2 communication.
+Through the project, I practiced:
 
-------------------------------------------------------------------------
+- ROS 2 node creation
+- Publishers
+- Topics
+- `Twist` messages
+- Timers
+- Callback functions
+- Velocity control
+- Linux-based ROS 2 execution
+- Robot simulation
+
+---
+
+## 🏁 Conclusion
+
+**ROS 2 TurtleSim Square Motion Controller** is a practical robotics project demonstrating how Python can be integrated with ROS 2 to control a simulated robot.
+
+The project starts with fundamental ROS 2 communication concepts and connects them to an observable robotic behavior inside TurtleSim.
+
+This provides a foundation for progressing toward more advanced robotics topics such as:
+
+- Sensor integration
+- Odometry
+- Localization
+- Feedback control
+- Autonomous navigation
+- ROS 2 services and actions
+- Real robotic platforms
+
+---
 
 ## 👤 Author
 
 **Anas Sami Al-Harthi**
 
-------------------------------------------------------------------------
+---
 
 ## ⭐ Project Summary
 
-**ROS 2 TurtleSim Square Motion Controller** is a compact robotics
-project focused on learning the fundamentals of ROS 2 communication and
-motion control. It uses Python and `rclpy` to publish velocity commands
-to TurtleSim, providing a practical foundation for more advanced ROS 2
-and robotics applications.
+**ROS 2 TurtleSim Square Motion Controller** demonstrates the practical use of **Python, ROS 2, TurtleSim, publishers, topics, timers, callbacks, and `Twist` velocity messages** to control simulated robot movement.
+
+It is a compact project focused on building practical ROS 2 and robotics programming experience.
+
+---
